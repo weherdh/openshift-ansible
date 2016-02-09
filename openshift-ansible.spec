@@ -5,7 +5,7 @@
 }
 
 Name:           openshift-ansible
-Version:        3.0.35
+Version:        3.0.39
 Release:        1%{?dist}
 Summary:        Openshift and Atomic Enterprise Ansible
 License:        ASL 2.0
@@ -259,6 +259,132 @@ Atomic OpenShift Utilities includes
 
 
 %changelog
+* Tue Feb 09 2016 Brenton Leanhardt <bleanhar@redhat.com> 3.0.39-1
+- Bug 1304150 - Can't upgrade atomic-openshift to specified version
+  (bleanhar@redhat.com)
+- Mask master service when using native ha (jdetiber@redhat.com)
+- aoi: Safer check for master_routingconfig_subdomain (smunilla@redhat.com)
+- Add a DNS server on OpenStack clusters (lhuard@amadeus.com)
+- renamed /etc/openshift to /etc/origin (sten@redhat.com)
+- gitignore : .tag* (atom editor tag files) (sdodson@redhat.com)
+- Add an early check to ensure that node names resolve to an interface on the
+  host (sdodson@redhat.com)
+- Allow compression option to be set to empty for non compressed QCow images
+  Support tgz and gzip compressed images (akram@free.fr)
+- Replace status_changed bool (abutcher@redhat.com)
+- Improve docs and consistency of setting the ssh_user (jdetiber@redhat.com)
+- remove outdated comments (jdetiber@redhat.com)
+- add etcd hosts for gce playbooks (jdetiber@redhat.com)
+- GCE cloud provider updates (jdetiber@redhat.com)
+- Remove extra nfs configuration. (abutcher@redhat.com)
+- Do not apply the etcd_certificates role during node playbook.
+  (abutcher@redhat.com)
+- Add g_new_node_hosts to cluster_hosts. (abutcher@redhat.com)
+- Updating examples to use /etc/origin/master/htpasswd (jstuever@redhat.com)
+- Refactor registry storage options. (abutcher@redhat.com)
+- Additional overrides for cloud provider playbooks (jdetiber@redhat.com)
+- Bring first etcd server up before others. (dgoodwin@redhat.com)
+
+* Tue Feb 02 2016 Brenton Leanhardt <bleanhar@redhat.com> 3.0.38-1
+- aoi: Ask for osm_default_subdomain in interactive mode (smunilla@redhat.com)
+- add item to hold number of stray OVS rules found/removed (jdiaz@redhat.com)
+- changed adhoc playbook to match new host monitoring container
+  (mwoodson@redhat.com)
+- Multi-master fixes for provider playbooks (jdetiber@redhat.com)
+- zabbix: added master local api items and triggers (mwoodson@redhat.com)
+- Added docs around oo_nodes_with_label (jdetiber@redhat.com)
+- fix for terminate (jdetiber@redhat.com)
+- Fix node tags for aws provider (jdetiber@redhat.com)
+- use yaml for loading lable info instead of json (jdetiber@redhat.com)
+- infra_node fixes (jdetiber@redhat.com)
+- removing extraneous comments (rharriso@redhat.com)
+- Remove commented lines and fix pylint check (rharriso@redhat.com)
+- Cleaning up the dyn ansible module for merging (rharriso@redhat.com)
+- Fix missing bool filter (sdodson@redhat.com)
+- Sync platest imagestreams (sdodson@redhat.com)
+- Fixing last pylint error (rharriso@redhat.com)
+- Fix hostname for aws cloud provider (jdetiber@redhat.com)
+- Fixing pylint errors (rharriso@redhat.com)
+- Give openvswitch container some time to start (jprovazn@redhat.com)
+- s3_registry no filter named 'lookup' (florian.lambert@enovance.com)
+- WIP adding the lib_dyn role for the dyn_record module (rharriso@redhat.com)
+
+* Fri Jan 29 2016 Kenny Woodson <kwoodson@redhat.com> 3.0.37-1
+- Adding ip address option (kwoodson@redhat.com)
+- Enable cockpit when not is_atomic. (abutcher@redhat.com)
+- Explicitly restart the atomic node service after configuring it for nuage
+  (vishal.patil@nuagenetworks.net)
+- Fix for bug 1298 (vishal.patil@nuagenetworks.net)
+- fixing logic for skipping symlinks (kwoodson@redhat.com)
+- Allow to have custom bucket name and region (florian.lambert@enovance.com)
+- Add inventory example for logrotate_scripts (abutcher@redhat.com)
+- Minor readme cleanup for Bug 1271566 (bleanhar@redhat.com)
+- fix template trigger calc (jdiaz@redhat.com)
+- Configure logrotate on atomic. (abutcher@redhat.com)
+- Comparing zbx_host interfaces and removing duplicate hostgroup_names
+  (kwoodson@redhat.com)
+- Dockerfile: Require pyOpenSSL (gscrivan@redhat.com)
+- replace yum with dnf (spartacus06@gmail.com)
+- Install cockpit, logrotate and fluentd unless host is atomic.
+  (abutcher@redhat.com)
+- zabbix: added the skydns items and triggers (mwoodson@redhat.com)
+- fix pkg_version (spinolacastro@gmail.com)
+- Expose data_dir (spinolacastro@gmail.com)
+- Fix checking for update package availability (nikolai@prokoschenko.de)
+- Fix oo_pretty_print_cluster following the renaming of `env` into `clusterid`
+  (lhuard@amadeus.com)
+- Ensure openssl present for etcd_ca (jdetiber@redhat.com)
+- Update Docs and test for testing ansible version (jdetiber@redhat.com)
+- Add Nuage support to openshift ansible (vishpat@gmail.com)
+- Updating for host monitoring HA masters (kwoodson@redhat.com)
+- adhoc s3 registry - add auth part in the registry config sample
+  (gael.lambert@enovance.com)
+- Move the `is_atomic` check from `update_repos_and_packages.yml` to
+  `rhel_subscribe` (lhuard@amadeus.com)
+- Increase OpenStack stack creation/deletion timeout (lhuard@amadeus.com)
+
+* Mon Jan 25 2016 Kenny Woodson <kwoodson@redhat.com> 3.0.36-1
+- Fixing awsutil to support aliases and v3 (kwoodson@redhat.com)
+- Fail when master restart playbook finds no active masters rather than any
+  failed masters. (abutcher@redhat.com)
+- Skipping any symlinks for the yaml validation check (kwoodson@redhat.com)
+- Added template for config loop. (twiest@redhat.com)
+- Test validate_pcs_cluster input is basestring instead of str.
+  (abutcher@redhat.com)
+- Fix error when oo_masters_to_config is empty (jdetiber@redhat.com)
+- Update inventory examples for console customization (spinolacastro@gmail.com)
+- Expose console config for customization (spinolacastro@gmail.com)
+- oso_host_monitoring: added environment as a var to the host monitoring
+  systemd script (mwoodson@redhat.com)
+- Check master certificates during upgrade. (abutcher@redhat.com)
+- Use haproxy frontend port for os_firewall. (abutcher@redhat.com)
+- Fix native master api sysconfig. (abutcher@redhat.com)
+- Enable kubernetes master config of podEvictionTimeout from ansible
+  (jstuever@redhat.com)
+- Fix wrapper pathing for non-root user install. (abutcher@redhat.com)
+- Remove camel case for bin/cluster addNodes (jdetiber@redhat.com)
+- Update cluster_hosts.yml for cloud providers (jdetiber@redhat.com)
+- Removing ruby scripts and replacing with python. (kwoodson@redhat.com)
+- Fixed a logic bug and yaml load (kwoodson@redhat.com)
+- Fixing yaml validation in python.  Inputs behave differently as does glob
+  (kwoodson@redhat.com)
+- oso_monitoring: add the zabbix libs (mwoodson@redhat.com)
+- Removing removing scripts and moving to python. (kwoodson@redhat.com)
+- add ability to disable ztriggers and disable new container dns check
+  (jdiaz@redhat.com)
+- Remove default disable of SDN for GCE (jdetiber@redhat.com)
+- Fix hardcoded api_port in openshift_master_cluster (jdetiber@redhat.com)
+- Use local address for loopback kubeconfig (jdetiber@redhat.com)
+- consolidate steps and cleanup template dir (jdetiber@redhat.com)
+- v3_0_to_v3_1_upgrade: Remove is_atomic check for upgrades
+  (smunilla@redhat.com)
+- v3_0_to_v3_1_upgrade: Copy tasks rather than including from the playbook
+  (smunilla@redhat.com)
+- v3_0_to_v3_1_upgrade: Install storage packages (smunilla@redhat.com)
+- Controllers_port and firewall rules (spinolacastro@gmail.com)
+- Fix bind address/port when isn't default (spinolacastro@gmail.com)
+- Add ability to disable os_firewall (jdetiber@redhat.com)
+
 * Mon Jan 18 2016 Brenton Leanhardt <bleanhar@redhat.com> 3.0.35-1
 - added the lib_timedate role (mwoodson@redhat.com)
 - added chrony (mwoodson@redhat.com)

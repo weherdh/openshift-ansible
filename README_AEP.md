@@ -10,19 +10,17 @@
 * [Overriding detected ip addresses and hostnames](#overriding-detected-ip-addresses-and-hostnames)
 
 ## Requirements
-* ansible
-  * Tested using ansible 1.9.1 and 1.9.2
-  * There is currently a known issue with ansible-1.9.0, you can downgrade to 1.8.4 on Fedora by installing one of the builds from Koji: http://koji.fedoraproject.org/koji/packageinfo?packageID=13842
+* ansible 1.9.4
   * Available in Fedora channels
   * Available for EL with EPEL and Optional channel
 * One or more RHEL 7.1 VMs
 * Either ssh key based auth for the root user or ssh key based auth for a user
   with sudo access (no password)
-* A checkout of atomic-enterprise-ansible from https://github.com/projectatomic/atomic-enterprise-ansible/
+* A checkout of openshift-ansible from https://github.com/openshift/openshift-ansible/
 
   ```sh
-  git clone https://github.com/projectatomic/atomic-enterprise-ansible.git
-  cd atomic-enterprise-ansible
+  git clone https://github.com/openshift/openshift-ansible.git
+  cd openshift-ansible
   ```
 
 ## Caveats

@@ -2,10 +2,10 @@
 g_template_openshift_master:
   name: Template Openshift Master
   zitems:
-  - name: create_app
+  - name: openshift.master.app.create
     applications:
     - Openshift Master
-    key: create_app
+    key: openshift.master.app.create
 
   - key: openshift.master.registry.healthz
     description: "Shows the health status of the cluster's docker registry"
@@ -20,13 +20,26 @@ g_template_openshift_master:
     - Openshift Master
 
   - key: openshift.master.api.ping
-    description: "Verify that the Openshift API is up"
+    description: "Verify that the Openshift API is up (uses the cluster API URL)"
+    type: int
+    applications:
+    - Openshift Master
+
+  - key: openshift.master.local.api.ping
+    description: "Verify that the Openshift API is up on the host (uses the API URL as the https://127.0.0.1)"
     type: int
     applications:
     - Openshift Master
 
   - key: openshift.master.api.healthz
-    description: "Checks the healthz check of the master's api: https://master_host/healthz"
+    description: "Checks the healthz check of the master's api: https://<cluster_api_url>/healthz"
+    type: int
+    data_type: bool
+    applications:
+    - Openshift Master
+
+  - key: openshift.master.local.api.healthz
+    description: "Checks the healthz check of the master's api: https://127.0.0.1/healthz"
     type: int
     data_type: bool
     applications:
@@ -94,6 +107,18 @@ g_template_openshift_master:
 
   - key: openshift.master.pv.failed.count
     description: Total number of Failed Persistent Volumes in the Openshift Cluster
+    type: int
+    applications:
+    - Openshift Master
+
+  - key: openshift.master.skydns.port.open
+    description: State of the SkyDNS port open and listening
+    type: int
+    applications:
+    - Openshift Master
+
+  - key: openshift.master.skydns.query
+    description: SkyDNS can be queried or not
     type: int
     applications:
     - Openshift Master
@@ -263,14 +288,14 @@ g_template_openshift_master:
 
   # Put triggers that depend on other triggers here (deps must be created first)
   - name: 'Application creation has failed on {HOST.NAME}'
-    expression: '{Template Openshift Master:create_app.last(#1)}=1 and {Template Openshift Master:create_app.last(#2)}=1'
+    expression: '{Template Openshift Master:openshift.master.app.create.last(#1)}=1 and {Template Openshift Master:openshift.master.app.create.last(#2)}=1'
     url: 'https://github.com/openshift/ops-sop/blob/master/V3/Alerts/check_create_app.asciidoc'
     dependencies:
     - 'Openshift Master process not running on {HOST.NAME}'
     priority: avg
 
   - name: 'Application creation has failed multiple times in the last hour on {HOST.NAME}'
-    expression: '{Template Openshift Master:create_app.sum(1h)}>3'
+    expression: '{Template Openshift Master:openshift.master.app.create.sum(1h)}>3'
     url: 'https://github.com/openshift/ops-sop/blob/master/V3/Alerts/check_create_app.asciidoc'
     dependencies:
     - 'Openshift Master process not running on {HOST.NAME}'
@@ -280,12 +305,22 @@ g_template_openshift_master:
   - name: 'Openshift Master API health check is failing on {HOST.NAME}'
     expression: '{Template Openshift Master:openshift.master.api.healthz.max(#3)}<1'
     url: 'https://github.com/openshift/ops-sop/blob/master/V3/Alerts/openshift_master.asciidoc'
+    priority: high
+
+  - name: 'Openshift Master Local API health check is failing on {HOST.NAME}'
+    expression: '{Template Openshift Master:openshift.master.local.api.healthz.max(#3)}<1'
+    url: 'https://github.com/openshift/ops-sop/blob/master/V3/Alerts/openshift_master.asciidoc'
     dependencies:
     - 'Openshift Master process not running on {HOST.NAME}'
     priority: high
 
   - name: 'Openshift Master API PING check is failing on {HOST.NAME}'
     expression: '{Template Openshift Master:openshift.master.api.ping.max(#3)}<1'
+    url: 'https://github.com/openshift/ops-sop/blob/master/V3/Alerts/openshift_master.asciidoc'
+    priority: high
+
+  - name: 'Openshift Master Local API PING check is failing on {HOST.NAME}'
+    expression: '{Template Openshift Master:openshift.master.local.api.ping.max(#3)}<1'
     url: 'https://github.com/openshift/ops-sop/blob/master/V3/Alerts/openshift_master.asciidoc'
     dependencies:
     - 'Openshift Master process not running on {HOST.NAME}'
@@ -303,6 +338,20 @@ g_template_openshift_master:
     url: 'https://github.com/openshift/ops-sop/blob/master/V3/Alerts/openshift_master.asciidoc'
     dependencies:
     - 'Openshift Master process not running on {HOST.NAME}'
+    priority: high
+
+  - name: 'SkyDNS port not listening on {HOST.NAME}'
+    expression: '{Template Openshift Master:openshift.master.skydns.port.open.max(#3)}<1'
+    url: 'https://github.com/openshift/ops-sop/blob/master/V3/Alerts/openshift_master.asciidoc'
+    dependencies:
+    - 'Openshift Master process not running on {HOST.NAME}'
+    priority: high
+
+  - name: 'SkyDNS query failed on {HOST.NAME}'
+    expression: '{Template Openshift Master:openshift.master.skydns.query.max(#3)}<1'
+    url: 'https://github.com/openshift/ops-sop/blob/master/V3/Alerts/openshift_master.asciidoc'
+    dependencies:
+    - 'Openshift Master API health check is failing on {HOST.NAME}'
     priority: high
 
   zgraphs:
